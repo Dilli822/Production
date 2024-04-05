@@ -188,14 +188,11 @@ const UserProfile = () => {
 
   const fetchImageData = async () => {
     try {
-      const response = await fetch(
-        "account/api/userdetails/",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      );
+      const response = await fetch("account/api/userdetails/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
 
       const data = await response.json();
       console.log(data);
@@ -209,12 +206,13 @@ const UserProfile = () => {
       localStorage.setItem("address", data.address);
       localStorage.setItem("phone_number", data.phone_number);
       localStorage.setItem("bio", data.bio);
-      if (data.length > 0) {
-      } else if (response.status === 401) {
+      // if (data.length > 0) {
+      // } else
+      if (response.status === 401) {
         setIsLogged(false);
       }
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -241,13 +239,11 @@ const UserProfile = () => {
       if (response.ok) {
         // Successful update
         console.log("Username updated successfully");
-
         // Save the updated username in localStorage
         localStorage.setItem("user_name", editUsername);
-      } else {
-        // Handle error
-        console.error("Error updating username");
       }
+      // Handle error
+      console.error("Error updating username");
     } catch (error) {
       console.error("Error:", error);
     }
@@ -284,12 +280,11 @@ const UserProfile = () => {
         localStorage.setItem("phone_number", editPhoneNumber);
         localStorage.setItem("address", editAddress);
         localStorage.setItem("bio", editBio);
-      } else {
-        // Handle error
-        console.error("Error updating username");
       }
-    } catch (error) {
-      console.error("Error:", error);
+      // Handle error
+      console.error("Error updating username");
+    } catch (e) {
+      console.error("Error:", e);
     }
   };
 
@@ -311,7 +306,6 @@ const UserProfile = () => {
     ) {
       await updateUserDetails();
     }
-
     // Set isEdit to false after saving
     setIsEdit(false);
   };
@@ -338,7 +332,6 @@ const UserProfile = () => {
           setInitLoading(false);
           setBlogList(data);
           setIsLogged(true);
-
           if (data.length > 0) {
             // console.log(data);
           } else if (response.status === 401) {
@@ -367,6 +360,9 @@ const UserProfile = () => {
     [editPhoneNumber],
     [editBio]
   );
+
+  const userFirstImg = localStorage.getItem("user_image");
+  console.log(userFirstImg);
 
   if (isLoading) {
     return (
@@ -425,7 +421,7 @@ const UserProfile = () => {
                   cover={
                     <img
                       alt="example"
-                      src={firstUserImg?.image || ""}
+                      src={userFirstImg || ""}
                       style={{ padding: "15px", maxWidth: "100%" }}
                     />
                   }

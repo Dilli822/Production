@@ -14,7 +14,6 @@ function WeatherForecast() {
         // Get user's coordinates
         navigator.geolocation.getCurrentPosition(async (position) => {
           const { latitude, longitude } = position.coords;
-
           // Fetch weather data based on coordinates
           const response = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`
@@ -29,7 +28,6 @@ function WeatherForecast() {
         console.error("Error fetching weather data:", error);
       }
     };
-
     fetchWeatherData();
   }, [apiKey]);
 
@@ -76,7 +74,6 @@ function WeatherForecast() {
         sunny: "https://i.gifer.com/68J.gif",
       };
     }
-
     setWeatherGif(gifMap[weatherDescription] || null);
   };
 

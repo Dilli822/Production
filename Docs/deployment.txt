@@ -3,7 +3,7 @@
 https://www.youtube.com/watch?v=lyR78-zr2jI&t=426s
 
 2024-03-05
-Frontend: https://blogapp-eosin.vercel.app/
+Frontend: 
 Backend:  https://web-production-4cd0.up.railway.app/
 
 >>>>> Django Backend <<<<<

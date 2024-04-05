@@ -52,7 +52,7 @@ const AppHeader = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://web-production-4cd0.up.railway.app//account/api/usersList/",
+        "https://web-production-4cd0.up.railway.app/account/api/usersList/",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

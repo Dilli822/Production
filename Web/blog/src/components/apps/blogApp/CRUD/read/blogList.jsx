@@ -8,7 +8,9 @@ import {
   Modal,
   Col,
   Input,
+  Spin,
   Upload,
+  Alert,
   message,
 } from "antd";
 import {
@@ -35,6 +37,8 @@ const BlogList = () => {
   const [data, setData] = useState([]);
   const [list, setList] = useState([]);
   const [deleteId, setDeleteId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editHeader, setEditHeader] = useState("");
@@ -111,11 +115,13 @@ const BlogList = () => {
 
       // Sort the data in ascending order based on the date
       result.sort((a, b) => new Date(b.date) - new Date(a.date));
-
+      setIsLoading(false);
       setInitLoading(false);
       setData(result);
       setList(result);
     } catch (error) {
+      setIsLoading(true);
+      setError(error);
       console.error("Error fetching data:", error);
     }
   };
@@ -233,138 +239,164 @@ const BlogList = () => {
           Blogs List <hr />
         </Title>
 
-        <List
-          className="demo-loadmore-list"
-          loading={initLoading}
-          itemLayout="horizontal"
-          dataSource={list}
-          renderItem={(item) => (
-            <List.Item
-              actions={[
-                <Button
-                  icon={<EditOutlined />}
-                  onClick={() => {
-                    setId(item.id); // Set the id before calling handleEditPostBlog
-                    handleEditPostBlog(item.id);
-                  }}
-                >
-                  Edit
-                </Button>,
-                <Button
-                  danger
-                  icon={<DeleteOutlined />}
-                  onClick={() => showDeleteConfirm(item.id)}
-                >
-                  Delete
-                </Button>,
+        {isLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "calc(100vh - 64px)", // Subtract the height of the header
+            }}
+          >
+            <Spin size="large" />
+          </div>
+        ) : error ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "calc(100vh - 64px)", // Subtract the height of the header
+            }}
+          >
+            <Alert message={error} type="error" />
+          </div>
+        ) : (
+          <div>
+            <List
+              className="demo-loadmore-list"
+              loading={initLoading}
+              itemLayout="horizontal"
+              dataSource={list}
+              renderItem={(item) => (
+                <List.Item
+                  actions={[
+                    <Button
+                      icon={<EditOutlined />}
+                      onClick={() => {
+                        setId(item.id); // Set the id before calling handleEditPostBlog
+                        handleEditPostBlog(item.id);
+                      }}
+                    >
+                      Edit
+                    </Button>,
+                    <Button
+                      danger
+                      icon={<DeleteOutlined />}
+                      onClick={() => showDeleteConfirm(item.id)}
+                    >
+                      Delete
+                    </Button>,
 
-                <Button
-                  icon={<FolderViewOutlined />}
-                  onClick={() => handleView(item.id)}
+                    <Button
+                      icon={<FolderViewOutlined />}
+                      onClick={() => handleView(item.id)}
+                    >
+                      View
+                    </Button>,
+                  ]}
                 >
-                  View
-                </Button>,
-              ]}
-            >
-              <div
-                style={{
-                  display: "block",
-                  overflow: "hidden",
-                }}
-              >
-                {/* <img src="{item.src}" alt="" srcset="" /> */}
-                <img
-                  src={item.image}
-                  alt=""
-                  srcset=""
-                  style={{ width: "50px" }}
-                />
-                <h2> {item.title}</h2>
-                <p>
-                  {item.description.split(" ").slice(0, 50).join(" ") +
-                    (item.description.split(" ").length > 50 ? " ..." : "")}
-                </p>{" "}
-              </div>
-            </List.Item>
-          )}
-        />
-      </Layout>
-
-      <Modal
-        title="Edit Blog"
-        visible={editModalVisible}
-        onCancel={() => setEditModalVisible(false)}
-        footer={null} // No footer for simplicity, you can customize it
-        width="70%"
-      >
-        <Layout style={{ padding: "3%" }}>
-          <Col>
-            <h3>Title: </h3>
-            <Input
-              placeholder="Enter Blog Title"
-              value={editHeader}
-              onChange={handleEditHeaderChange}
-              style={{
-                marginBottom: "auto",
-                border: "none",
-                background: "none",
-              }}
-            />
-            <div>
-              {editImageFile ? ( // Check if there's a new image file
-                <img
-                  src={URL.createObjectURL(editImageFile)}
-                  alt="New Image"
-                  style={{ maxWidth: "100%", maxHeight: "200px" }}
-                /> // Display the new image
-              ) : (
-                <img
-                  src={clickedBlogImage}
-                  alt="Existing Image"
-                  style={{ maxWidth: "100%", maxHeight: "200px" }}
-                /> // Display the existing image
+                  <div
+                    style={{
+                      display: "block",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {/* <img src="{item.src}" alt="" srcset="" /> */}
+                    <img
+                      src={item.image}
+                      alt=""
+                      srcset=""
+                      style={{ width: "50px" }}
+                    />
+                    <h2> {item.title}</h2>
+                    <p>
+                      {item.description.split(" ").slice(0, 50).join(" ") +
+                        (item.description.split(" ").length > 50 ? " ..." : "")}
+                    </p>{" "}
+                  </div>
+                </List.Item>
               )}
-            </div>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <h3>Upload Picture/Image for your Blog</h3>
-              &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-              <Upload
-                beforeUpload={() => false} // Prevent default upload behavior
-                onChange={(info) => handleEditImageChange(info.file)}
-              >
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-              </Upload>
-            </div>
-            <h3> Description: </h3>
-            <TextArea
-              showCount
-              minHeight={500}
-              onChange={handleEditParagraphChange}
-              placeholder="Write your blog content here."
-              rows={15}
-              value={editParagraph}
             />
-          </Col>
 
-          <Col>
-            <br />
-            <Button
-              icon={<DeleteRowOutlined />}
-              onClick={() => setEditModalVisible(false)}
+            <Modal
+              title="Edit Blog"
+              visible={editModalVisible}
+              onCancel={() => setEditModalVisible(false)}
+              footer={null} // No footer for simplicity, you can customize it
+              width="70%"
             >
-              Discard Changes
-            </Button>
-            &nbsp;
-            <Button
-              icon={<SaveOutlined />}
-              onClick={submitEditChange}
-              loading={editLoading}
-            >
-              Save/Publish Changes
-            </Button>
-          </Col>
-        </Layout>
-      </Modal>
+              <Layout style={{ padding: "3%" }}>
+                <Col>
+                  <h3>Title: </h3>
+                  <Input
+                    placeholder="Enter Blog Title"
+                    value={editHeader}
+                    onChange={handleEditHeaderChange}
+                    style={{
+                      marginBottom: "auto",
+                      border: "none",
+                      background: "none",
+                    }}
+                  />
+                  <div>
+                    {editImageFile ? ( // Check if there's a new image file
+                      <img
+                        src={URL.createObjectURL(editImageFile)}
+                        alt="New Image"
+                        style={{ maxWidth: "100%", maxHeight: "200px" }}
+                      /> // Display the new image
+                    ) : (
+                      <img
+                        src={clickedBlogImage}
+                        alt="Existing Image"
+                        style={{ maxWidth: "100%", maxHeight: "200px" }}
+                      /> // Display the existing image
+                    )}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <h3>Upload Picture/Image for your Blog</h3>
+                    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                    <Upload
+                      beforeUpload={() => false} // Prevent default upload behavior
+                      onChange={(info) => handleEditImageChange(info.file)}
+                    >
+                      <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                    </Upload>
+                  </div>
+                  <h3> Description: </h3>
+                  <TextArea
+                    showCount
+                    minHeight={500}
+                    onChange={handleEditParagraphChange}
+                    placeholder="Write your blog content here."
+                    rows={15}
+                    value={editParagraph}
+                  />
+                </Col>
+
+                <Col>
+                  <br />
+                  <Button
+                    icon={<DeleteRowOutlined />}
+                    onClick={() => setEditModalVisible(false)}
+                  >
+                    Discard Changes
+                  </Button>
+                  &nbsp;
+                  <Button
+                    icon={<SaveOutlined />}
+                    onClick={submitEditChange}
+                    loading={editLoading}
+                  >
+                    Save/Publish Changes
+                  </Button>
+                </Col>
+              </Layout>
+            </Modal>
+          </div>
+        )}
+      </Layout>
 
       <AppFooter />
     </>

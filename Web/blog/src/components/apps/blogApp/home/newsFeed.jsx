@@ -98,7 +98,7 @@ const NewsFeed = ({
     const fetchBlogData = async () => {
       try {
         const response = await fetch(
-          "https://web-production-4cd0.up.railway.app//blog/api/blog-details/",
+          "https://web-production-4cd0.up.railway.app/blog/api/blog-details/",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -250,6 +250,7 @@ const NewsFeed = ({
                         color: "#000",
                       }}
                     >
+                      <div style={{ overflow: "hidden"}}>
                       <h2>{blogItem.title}</h2>
 
                       <p>
@@ -261,6 +262,8 @@ const NewsFeed = ({
                             ? " ..."
                             : "")}
                       </p>
+                      </div>
+
                     </Link>
                     <p>
                       <span>
@@ -305,7 +308,7 @@ const NewsFeed = ({
               )}
               <br />
 
-              {notFound ? <h1>Not Found Error</h1> : ""}
+            {notFound ? <h1>Not Found Error</h1> : ""}
             </Col>
 
             <Col
