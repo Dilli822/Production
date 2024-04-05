@@ -188,7 +188,7 @@ const UserProfile = () => {
 
   const fetchImageData = async () => {
     try {
-      const response = await fetch("account/api/userdetails/", {
+      const response = await fetch("https://web-production-4cd0.up.railway.app/account/api/userdetails/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
