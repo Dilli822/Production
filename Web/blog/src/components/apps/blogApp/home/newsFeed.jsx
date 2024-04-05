@@ -98,7 +98,7 @@ const NewsFeed = ({
     const fetchBlogData = async () => {
       try {
         const response = await fetch(
-          "http://127.0.0.1:8000/blog/api/blog-details/",
+          "https://web-production-4cd0.up.railway.app//blog/api/blog-details/",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
