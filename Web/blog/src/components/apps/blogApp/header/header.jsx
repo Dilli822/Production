@@ -52,7 +52,7 @@ const AppHeader = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/account/api/usersList/",
+        "https://web-production-4cd0.up.railway.app//account/api/usersList/",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -78,7 +78,7 @@ const AppHeader = () => {
   const fetchTotalBlogsCount = async () => {
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/blog/api/total-blogs-count/"
+        "https://web-production-4cd0.up.railway.app/blog/api/total-blogs-count/"
       );
       if (response.ok) {
         const data = await response.json();
