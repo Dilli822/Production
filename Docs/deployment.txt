@@ -1,0 +1,35 @@
+
+>>> Tutorial: 
+https://www.youtube.com/watch?v=lyR78-zr2jI&t=426s
+
+2024-03-05
+Frontend: https://blogapp-eosin.vercel.app/
+Backend:  https://web-production-4cd0.up.railway.app/
+
+>>>>> Django Backend <<<<<
+GitHub; https://github.com/Dilli822/blog
+
+Create a account in railway and import the github repo to be deployed make sure
+listed below are fulfilled first.
+
+1. Maintain Settings.py
+import os
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+ALLOWED HOSTS = [*]
+
+2. Create a Procfile with web: gunicorn backend.wsgi --log-file -  [backend is the name of your django app]
+   touch Procfile
+   pip install gunicorn
+
+3. Generate Requirements.txt using pip3 freeze > requirements.txt
+
+4. Create a runtime.txt with python-3.11.7 | mention the python app version you have used in the development 
+    for an example check with python -v or python3 -v 
+
+5. Run command python or python3 manage.py collectstatic
+
