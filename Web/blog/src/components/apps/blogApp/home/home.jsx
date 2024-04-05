@@ -299,7 +299,7 @@ const Home = () => {
                           <Col xs={6} md={5}>
                             <img
                               alt=""
-                              src={`http://127.0.0.1:8000${blog.image}`}
+                              src={`https://web-production-4cd0.up.railway.app${blog.image}`}
                               style={{ width: "100%", borderRadius: "3px" }}
                             />
                           </Col>
@@ -392,7 +392,7 @@ const Home = () => {
                           <Col xs={6} md={5}>
                             <img
                               alt=""
-                              src={`http://127.0.0.1:8000${blog.image}`}
+                              src={`https://web-production-4cd0.up.railway.app${blog.image}`}
                               style={{ width: "100%", borderRadius: "3px" }}
                             />
                           </Col>
