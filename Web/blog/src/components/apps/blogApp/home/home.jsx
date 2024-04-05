@@ -56,7 +56,7 @@ const Home = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        " https://web-production-4cd0.up.railway.app/blog/api/latest-blog/"
+        "https://web-production-4cd0.up.railway.app/blog/api/latest-blog/"
       );
       if (response.ok) {
         const data = await response.json();
@@ -231,7 +231,7 @@ const Home = () => {
                       alt=""
                       src={
                         blogBannerData
-                          ? `h https://web-production-4cd0.up.railway.app${blogBannerData.image}`
+                          ? `https://web-production-4cd0.up.railway.app${blogBannerData.image}`
                           : "https://assets-v2.lottiefiles.com/a/0e30b444-117c-11ee-9b0d-0fd3804d46cd/BkQxD7wtnZ.gif"
                       }
                       style={{
